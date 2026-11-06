@@ -85,10 +85,8 @@
   /* ---------- smooth scroll ---------- */
   let lenis = null;
   if (window.Lenis) {
-    lenis = new Lenis({ duration: 1.15, easing: t => 1 - Math.pow(1 - t, 4), smoothWheel: true });
+    lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9, smoothWheel: true });
     lenis.stop();
-    const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
     document.addEventListener('click', e => {
       const a = e.target.closest('a[href^="#"]');
       if (!a) return;
@@ -209,10 +207,14 @@
       track.style.transform = `translateX(${marqueeX}px) skewX(${clamp(-velocity * 0.4, -10, 10)}deg)`;
     }
 
-    requestAnimationFrame(frame);
   }
   if (track) track.innerHTML += track.innerHTML; // duplicate for a seamless loop
-  requestAnimationFrame(frame);
+  const loop = t => {
+    lenis?.raf(t);
+    frame();
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
 
   /* ---------- cursor + magnetic buttons (mouse only) ---------- */
   if (fine) {

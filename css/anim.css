@@ -1,7 +1,10 @@
 /* ============ Grandlense — motion layer ============ */
+/* Lenis (official stylesheet rules) */
 html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
+html.lenis { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
 
 /* ---------- fixed nav ---------- */
 .nav {
@@ -29,8 +32,8 @@ body.loaded .hero h1 .w > span { transform: none; }
 body.loaded .hero .chip, body.loaded .hero .progress { opacity: 1; transform: none; }
 
 /* ---------- scroll-lit statements ---------- */
-.statement .sw, .cta .sw { transition: opacity .35s, filter .35s; opacity: .18; filter: blur(1.5px); }
-.statement .sw.lit, .cta .sw.lit { opacity: 1; filter: none; }
+.statement .sw, .cta .sw { transition: opacity .4s; opacity: .18; }
+.statement .sw.lit, .cta .sw.lit { opacity: 1; }
 
 /* ---------- reveal variants ---------- */
 [data-a] { transition: opacity .9s cubic-bezier(.2, .7, .2, 1), transform .9s cubic-bezier(.2, .7, .2, 1), clip-path 1.2s cubic-bezier(.77, 0, .18, 1); transition-delay: var(--d, 0s); }
@@ -44,8 +47,8 @@ body.loaded .hero .chip, body.loaded .hero .progress { opacity: 1; transform: no
 
 /* card parallax image (taller than the card so it can drift) */
 .card > img { top: -8%; height: 116%; }
-.card.settled > img { transform: translateY(var(--py, 0)) scale(1); transition: transform .2s linear; }
-.card.settled:hover > img { transform: translateY(var(--py, 0)) scale(1.06); transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.card.settled > img { transform: none; translate: 0 var(--py, 0); scale: 1; transition: scale 1.2s cubic-bezier(.2, .7, .2, 1); will-change: translate; }
+.card.settled:hover > img { transform: none; scale: 1.06; }
 
 /* panels morph in from a rounded card to full bleed */
 .panel { will-change: scale; transform-origin: 50% 0; }
