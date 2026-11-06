@@ -21,37 +21,23 @@
     { title: 'Forever Remembered Fondly', tag: 'Reception' },
   ];
   const imgs = $$('.hero-slides img');
-  const thumbs = $('.thumbs'), bar = $('.progress .bar i'), cur = $('.progress .cur');
+  const bar = $('.progress .bar i'), cur = $('.progress .cur');
   const DURATION = 6000;
   let hi = 0, start = performance.now();
 
-  function renderThumbs() {
-    thumbs.innerHTML = [1, 2].map(o => {
-      const k = (hi + o) % slides.length;
-      return `<button class="thumb" data-k="${k}">
-        <img src="${imgs[k].getAttribute('src')}" alt="">
-        <span><b>${slides[k].title}</b><small>${slides[k].tag}</small></span></button>`;
-    }).join('');
-  }
   function goHero(k) {
     imgs[hi].classList.remove('on');
     hi = k;
     imgs[hi].classList.add('on');
     cur.textContent = pad(hi + 1);
     start = performance.now();
-    renderThumbs();
   }
-  thumbs.addEventListener('click', e => {
-    const t = e.target.closest('.thumb');
-    if (t) goHero(+t.dataset.k);
-  });
   (function tick(now) {
     const p = Math.min((now - start) / DURATION, 1);
     bar.style.width = p * 100 + '%';
     if (p >= 1) goHero((hi + 1) % slides.length);
     requestAnimationFrame(tick);
   })(performance.now());
-  renderThumbs();
 
   /* ---------- services carousel ---------- */
   const services = [
@@ -64,7 +50,7 @@
   ];
   const list = $('.svc-list'), track = $('.track');
   list.innerHTML = services.map((s, i) => `<li><button data-i="${i}">${s.name}</button></li>`).join('');
-  track.innerHTML = services.map(s => `<figure><img src="img/services/services-bg-${s.img}.jpg" alt="${s.name}" loading="lazy"></figure>`).join('');
+  track.innerHTML = services.map(s => `<figure><img src="img/services/services-bg-${s.img}.jpg" alt="${s.name}"></figure>`).join('');
   $('.svc-total').textContent = pad(services.length);
   let si = 0;
   function goSvc(i) {
