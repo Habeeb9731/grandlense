@@ -58,6 +58,7 @@
     const fig = track.children[si];
     track.style.transform = `translateX(${-fig.offsetLeft}px)`;
     $$('button', list).forEach((b, k) => b.classList.toggle('on', k === si));
+    [...track.children].forEach((f, k) => f.classList.toggle('active', k === si));
     $('.svc-title').textContent = services[si].name;
     $('.svc-desc').textContent = services[si].desc;
     $('.svc-cur').textContent = pad(si + 1);
@@ -102,11 +103,25 @@
 
   /* ---------- lightbox ---------- */
   const lb = $('.lightbox'), lbImg = $('img', lb), lbCap = $('p', lb);
-  $$('.card-btn').forEach(b => b.addEventListener('click', () => {
-    lbImg.src = `img/works/works-large/works-page-img-carousel-item-large-${b.dataset.lb}.jpg`;
-    lbImg.alt = lbCap.textContent = b.closest('.card').querySelector('h3').textContent;
+  const openLightbox = (src, caption) => {
+    lbImg.src = src;
+    lbImg.alt = lbCap.textContent = caption;
     lb.classList.add('open');
+  };
+  // the whole portfolio card opens the full-size image, not just its button
+  $$('.card').forEach(card => card.addEventListener('click', () => {
+    const n = $('.card-btn', card).dataset.lb;
+    openLightbox(`img/works/works-large/works-page-img-carousel-item-large-${n}.jpg`, $('h3', card).textContent);
   }));
+
+  // services carousel: a side photo moves the carousel to it; the active photo opens full screen
+  track.addEventListener('click', e => {
+    const fig = e.target.closest('figure');
+    if (!fig) return;
+    const i = [...track.children].indexOf(fig);
+    if (i === si) openLightbox($('img', fig).getAttribute('src'), services[i].name);
+    else goSvc(i);
+  });
   const close = () => lb.classList.remove('open');
   lb.addEventListener('click', e => { if (e.target === lb || e.target.closest('.x')) close(); });
   addEventListener('keydown', e => e.key === 'Escape' && close());

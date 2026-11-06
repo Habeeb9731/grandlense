@@ -225,8 +225,16 @@
       cur.style.transform = `translate(${cx}px, ${cy}px)`;
       requestAnimationFrame(move);
     })();
+    // after a carousel click the photo slides under a still mouse, so re-read what's under it
+    document.addEventListener('click', () => setTimeout(() => {
+      const t = document.elementFromPoint(mx, my);
+      const side = t && t.closest('.track figure:not(.active)');
+      cur.firstElementChild.textContent = side ? 'Next' : 'View';
+    }, 900));
     document.addEventListener('mouseover', e => {
       const t = e.target;
+      const side = t.closest('.track figure:not(.active)');
+      cur.firstElementChild.textContent = side ? 'Next' : 'View';
       cur.classList.toggle('view', !!t.closest('.card, .track figure'));
       cur.classList.toggle('link', !t.closest('.card, .track figure') && !!t.closest('a, button'));
     });

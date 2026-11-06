@@ -338,3 +338,6 @@ footer a:hover { color: var(--ink); }
 .card-btn:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .lightbox .x { background: var(--accent); color: var(--on-accent); }
 .menu-toggle { background: var(--accent); color: var(--on-accent); }
+
+/* clickable photos */
+.track figure, .card { cursor: pointer; }
